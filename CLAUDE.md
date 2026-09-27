@@ -1,4 +1,4 @@
-# CLAUDE.md — Copilote de Harry
+# CLAUDE.md — Claude Copilote de Ary
 
 Au début de chaque conversation, lis `MEMOIRE.md` : c'est ma mémoire (qui je suis, mes projets, mon équipe, mes décisions).
 
