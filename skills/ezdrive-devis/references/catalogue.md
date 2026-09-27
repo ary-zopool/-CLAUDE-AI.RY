@@ -45,6 +45,8 @@ Le coffret figurait à 368,40 € sur le devis EZD-DEV002998. **Ce prix est faux
 
 Borne **0 %** · Tranchée **2,1 %** · Tout le reste **8,5 %**.
 
+**Guyane (973) : TVA non applicable** (article 294 du CGI). Toutes les lignes passent à 0 % et le document porte la mention « TVA non applicable, article 294 du CGI ». La grille HT reste celle de Martinique, à confirmer pour la Guyane.
+
 La base imposable est le total HT **moins** la valeur de la borne. Les anciens devis affichent souvent un « montant total imposable » égal au HT complet : c'est faux, même si la TVA elle-même est juste.
 
 ## Les sept contrôles
@@ -95,4 +97,8 @@ Le skill produit une **estimation**, pas un devis. Le prix est garanti jusqu'au 
 
 Le tunnel est intégralement à distance : aucun commercial ne se déplace avant signature. L'interdiction de percevoir un paiement avant sept jours, posée par l'article L221-10 du code de la consommation pour les contrats hors établissement, ne s'applique donc pas. **Si un commercial venait à se déplacer au domicile avant la signature, cette analyse tomberait** et l'acompte deviendrait illégal, sous peine de deux ans d'emprisonnement et 150 000 € d'amende (L242-7).
 
-Le délai de rétractation et de remboursement est de **quatorze jours**, jamais trente. Le formulaire type de rétractation doit être joint à chaque envoi ; il n'est pas encore produit.
+Le délai de rétractation et de remboursement est de **quatorze jours**, jamais trente. Le formulaire type de rétractation est produit en page 4 de chaque estimation.
+
+## Médiateur de la consommation
+
+CM2C — Centre de la Médiation de la Consommation de Conciliateurs de Justice, 14 rue Saint-Jean, 75017 Paris, www.cm2c.net, cm2c@cm2c.net. Coordonnées codées dans `scripts/generer_devis.py` (constante `MEDIATEUR`). **EZdrive doit avoir signé la convention d'adhésion avec le CM2C** : sans convention, la mention est fausse.
