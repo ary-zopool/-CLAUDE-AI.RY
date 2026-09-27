@@ -49,6 +49,22 @@ OPTIONS = {
 }
 
 PLAFOND_ALMA = 2000.00        # au-delà, pas de paiement en 4 fois
+
+# Territoire déduit du code postal du client. En Guyane la TVA n'est pas
+# applicable (art. 294 du CGI) : toutes les lignes passent à 0 %.
+TERRITOIRES = {
+    "971": dict(nom="Guadeloupe", tva=True),
+    "972": dict(nom="Martinique", tva=True),
+    "973": dict(nom="Guyane",     tva=False),
+    "974": dict(nom="La Réunion", tva=True),
+}
+MENTION_TVA_GUYANE = "TVA non applicable, article 294 du CGI"
+
+# Médiateur de la consommation (art. L616-1 et R616-1 du code de la consommation).
+# EZdrive doit avoir signé la convention d'adhésion avec ce médiateur.
+MEDIATEUR = dict(nom="CM2C — Centre de la Médiation de la Consommation de Conciliateurs de Justice",
+                 adresse="14 rue Saint-Jean, 75017 Paris",
+                 site="www.cm2c.net", mail="cm2c@cm2c.net")
 BORNE_BASSE, BORNE_HAUTE = 1500.00, 2200.00   # fourchette de vraisemblance B2C
 
 # ─────────────────────────── utilitaires ───────────────────────────
@@ -88,6 +104,17 @@ def construire(cfg):
         blocages.append(f"Borne inconnue : {bcle!r}. Valeurs admises : {', '.join(BORNES)}.")
         return None, alertes, blocages
     b = BORNES[bcle]
+
+    cp = str(cfg.get("client", {}).get("cp", "")).strip()
+    terr = TERRITOIRES.get(cp[:3]) if len(cp) == 5 and cp.isdigit() else None
+    if terr is None:
+        blocages.append(f"Code postal client {cp!r} absent ou hors des territoires couverts "
+                        f"({', '.join(t['nom'] for t in TERRITOIRES.values())}). "
+                        "Il détermine le régime de TVA : demandez-le avant de chiffrer.")
+        return None, alertes, blocages
+    if not terr["tva"]:
+        alertes.append(f"{terr['nom']} : {MENTION_TVA_GUYANE}, toutes les lignes passent à 0 %. "
+                       "La grille HT appliquée est celle de Martinique : à confirmer pour ce territoire.")
 
     rem_b = float(cfg.get("remise_borne", 0) or 0)
     rem_c = float(cfg.get("remise_cable", 0) or 0)
@@ -133,6 +160,9 @@ def construire(cfg):
                         qte="1", tva=float(l.get("tva", 8.5)), mt=round(mt, 2)))
 
     toutes = forfait + sup
+    if not terr["tva"]:
+        for l in toutes:
+            l["tva"] = 0.0
     ht = round(sum(l["mt"] for l in toutes), 2)
 
     par_taux = {}
@@ -154,9 +184,13 @@ def construire(cfg):
     ctrl.append(("Recomposition du total HT",
                  f"{len(toutes)} lignes → {eur(somme)}", abs(somme - ht) < 0.005))
     base_tx = round(ht - par_taux.get(0.0, 0), 2)
-    ok3 = not (tva_tot == 0 and base_tx > 0)
+    if terr["tva"]:
+        ok3 = not (tva_tot == 0 and base_tx > 0)
+    else:
+        ok3 = tva_tot == 0
     ctrl.append(("Base imposable et TVA",
-                 f"base taxable {eur(base_tx)} → TVA {eur(tva_tot)}", ok3))
+                 (f"base taxable {eur(base_tx)} → TVA {eur(tva_tot)}" if terr["tva"]
+                  else f"{terr['nom']} : {MENTION_TVA_GUYANE}"), ok3))
     ok4 = BORNE_BASSE <= ttc <= BORNE_HAUTE
     ctrl.append(("Fourchette de vraisemblance",
                  f"{eur(ttc)} ({'dans' if ok4 else 'hors'} 1 500 – 2 200 € TTC)", True))
@@ -174,7 +208,7 @@ def construire(cfg):
         alertes.append(f"{eur(ttc)} dépasse le plafond Alma de {eur(PLAFOND_ALMA)} : "
                        "le paiement en 4 fois est masqué, seul le virement 50/50 est proposé.")
 
-    d = dict(cfg=cfg, ml=ml, forfait=f, borne=b, forfait_lignes=forfait, sup=sup,
+    d = dict(cfg=cfg, ml=ml, forfait=f, borne=b, forfait_lignes=forfait, sup=sup, terr=terr,
              ht=ht, detail=detail, tva=tva_tot, ttc=ttc, alma=alma, mens=mens,
              acompte=int(ttc * 50 + 0.5) / 100, solde=round(ttc - int(ttc * 50 + 0.5) / 100, 2),
              controles=ctrl)
@@ -236,7 +270,7 @@ def html(d):
         return (f'<tr><td><b>{esc(l["lab"])}</b>'
                 f'{f"<em>{esc(l['des'])}</em>" if l["des"] else ""}</td>'
                 f'<td class="n">{esc(l["qte"])}</td>'
-                f'<td class="n">{str(l["tva"]).replace(".", ",")} %</td>'
+                f'<td class="n">{(str(l["tva"]).replace(".", ",") + " %") if d["terr"]["tva"] else "n.a."}</td>'
                 f'<td class="n">{eur(l["mt"])}</td></tr>')
 
     rows = (f'<tr class="sec"><td colspan="4">Forfait Kit Standard — {d["forfait"]["lab"]}, borne 7,4 kW</td></tr>'
@@ -246,7 +280,9 @@ def html(d):
 
     sums = f'<div><span>Total hors taxes</span><span class="n">{eur(d["ht"])}</span></div>'
     first = True
-    for x in d["detail"]:
+    if not d["terr"]["tva"]:
+        sums += (f'<div class="sep"><span>{MENTION_TVA_GUYANE}</span><span class="n">0,00 €</span></div>')
+    for x in (d["detail"] if d["terr"]["tva"] else []):
         lab = "Base à 0 % — borne" if x["taux"] == 0 else f'TVA {str(x["taux"]).replace(".", ",")} % sur {eur(x["base"])}'
         val = eur(x["base"]) if x["taux"] == 0 else eur(x["montant"])
         sums += f'<div{" class=\'sep\'" if first else ""}><span>{lab}</span><span class="n">{val}</span></div>'
@@ -367,11 +403,27 @@ def html(d):
   <h3>Validité</h3>
   <p>La présente estimation est valable jusqu'au {fd(exp)}. Au-delà, les prix sont susceptibles d'être révisés.</p>
   <h3>Médiation de la consommation</h3>
-  <p>En cas de litige non résolu directement, le client consommateur peut recourir gratuitement à un médiateur de la consommation. Coordonnées communiquées sur simple demande.</p>
+  <p>Conformément aux articles L616-1 et R616-1 du code de la consommation, en cas de litige non résolu par une réclamation écrite préalable auprès d'EZdrive, le client consommateur peut recourir gratuitement au médiateur de la consommation dont relève EZdrive : <b>{MEDIATEUR['nom']}</b>, {MEDIATEUR['adresse']} — {MEDIATEUR['site']} — {MEDIATEUR['mail']}.</p>
 </div>
 <div class="foot">EZDRIVE — 8 rue Georges Eucharis, 97200 Fort-de-France, Martinique<br>
 SIRET 893 737 692 00010 — NAF 4321A — RCS Fort-de-France — SAS au capital de 5 000 €<br>
 contact@ezdrive.fr — https://www.ezdrive.fr</div>
+
+<div class="brk"></div>
+{tete(f'Rétractation — {esc(num)}')}
+<h2 style="margin-bottom:4mm">Formulaire de rétractation</h2>
+<div class="legal" style="columns:1;font-size:10pt;line-height:1.7">
+  <p>(Veuillez compléter et renvoyer le présent formulaire uniquement si vous souhaitez vous rétracter du contrat.)</p>
+  <p>À l'attention de EZDRIVE, 8 rue Georges Eucharis, 97200 Fort-de-France, Martinique — contact@ezdrive.fr :</p>
+  <p>Je/nous (*) vous notifie/notifions (*) par la présente ma/notre (*) rétractation du contrat pour la vente du bien (*)/pour la prestation de services (*) ci-dessous :</p>
+  <p>Estimation n° {esc(num)} — installation d'une borne de recharge à domicile.</p>
+  <p>Commandé le (*)/reçu le (*) : ........................................................</p>
+  <p>Nom du (des) consommateur(s) : ........................................................</p>
+  <p>Adresse du (des) consommateur(s) : ........................................................</p>
+  <p>Signature du (des) consommateur(s) (uniquement en cas de notification du présent formulaire sur papier) :</p>
+  <p style="margin-top:14mm">Date : ........................................................</p>
+  <p>(*) Rayez la mention inutile.</p>
+</div>
 </body></html>"""
 
 def pdf(html_txt, out):
