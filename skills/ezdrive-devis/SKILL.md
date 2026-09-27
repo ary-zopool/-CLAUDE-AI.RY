@@ -1,6 +1,6 @@
 ---
 name: ezdrive-devis
-description: Établit une estimation client EZdrive pour l'installation d'une borne de recharge à domicile en Martinique, Guadeloupe, Guyane ou La Réunion, et la produit en PDF de trois pages avec le prix garanti, le paiement Alma en 4 fois, les mentions légales et les contrôles de cohérence. Utilise ce skill dès qu'il est question de chiffrer, établir, corriger ou vérifier un devis, une estimation, un forfait Kit Standard, un linéaire de câble, une tranchée, ou dès qu'apparaît une référence EZD-DEV ou EZD-EST, même si l'utilisateur ne demande pas explicitement un « devis ». Utilise-le aussi pour vérifier qu'un chiffrage existant est juste.
+description: Établit une estimation client EZdrive pour l'installation d'une borne de recharge à domicile en Martinique, Guadeloupe, Guyane ou La Réunion, et la produit en PDF de quatre pages avec le prix garanti, le paiement Alma en 4 fois, les mentions légales et les contrôles de cohérence. Utilise ce skill dès qu'il est question de chiffrer, établir, corriger ou vérifier un devis, une estimation, un forfait Kit Standard, un linéaire de câble, une tranchée, ou dès qu'apparaît une référence EZD-DEV ou EZD-EST, même si l'utilisateur ne demande pas explicitement un « devis ». Utilise-le aussi pour vérifier qu'un chiffrage existant est juste.
 ---
 
 # Estimation EZdrive
@@ -18,7 +18,7 @@ Le modèle repose sur un engagement : **prix garanti jusqu'au montant affiché**
 Cinq informations sont nécessaires. S'il en manque une, demande-la et arrête-toi là.
 
 1. **Le linéaire en mètres.** Un chiffre précis. « Environ 10 mètres » ne suffit pas : demande de trancher, le palier change à 6, 12, 20 et 30 ml.
-2. **Le nom et l'adresse du client.**
+2. **Le nom et l'adresse du client, code postal compris.** Le code postal fixe le territoire et donc la TVA : sans lui, le script refuse. En Guyane (973), la TVA n'est pas applicable (art. 294 du CGI) : le script passe toutes les lignes à 0 %.
 3. **Le type de borne** : non connectée, ou connectée et pilotée.
 4. **Les travaux complémentaires** et leurs quantités : tranchée, coffret, goulotte, câble 3G16, Consuel.
 5. **Le type de pose** : contre un mur, ou sur poteau. Le poteau n'est pas catalogué — voir plus bas.
@@ -49,7 +49,7 @@ python3 scripts/generer_devis.py devis.json -o devis.pdf
 
 `borne` vaut `non_connectee` ou `connectee_pilotee`. Les `id` d'options sont `tranchee`, `goulotte`, `cable3g16`, `consuel` — pour les articles au mètre, `qte` est le linéaire.
 
-Le script choisit le forfait d'après `lineaire_m`, calcule la TVA selon les trois régimes, décide si le paiement Alma en 4 fois est proposé, et rend un PDF de trois pages : l'offre, la garantie de prix et la signature ; le détail chiffré ; les conditions.
+Le script choisit le forfait d'après `lineaire_m`, calcule la TVA selon les trois régimes, décide si le paiement Alma en 4 fois est proposé, et rend un PDF de quatre pages : l'offre, la garantie de prix et la signature ; le détail chiffré ; les conditions, avec le médiateur de la consommation ; le formulaire type de rétractation.
 
 ## Après avoir lancé le script
 
