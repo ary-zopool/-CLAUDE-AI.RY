@@ -1,0 +1,28 @@
+# Modèles de messages — une section par campagne
+# Variables disponibles : {prenom} {entreprise} {territoire} {secteur} {poste}
+# Une variable vide bloque l'envoi pour ce prospect (statut "erreur") : rien ne part à moitié rempli.
+# L'invitation part SANS note (comme Stéphane Bergé) : le premier message arrive après l'acceptation.
+
+ezdrive_d3:
+  marque: EZdrive
+  verifier_charte: true   # contrôle mots interdits + vouvoiement avant tout envoi
+  message_1: |-
+    Bonjour {prenom}, merci d'avoir accepté.
+    Est-ce que la recharge des véhicules électriques est un sujet chez {entreprise} en ce moment, pour vos clients, vos salariés ou votre flotte ?
+    EZdrive pose des bornes de recharge en {territoire} depuis 10 ans, votre avis m'intéresse.
+  relance_1: |-
+    Je me permets de revenir vers vous, {prenom} : plutôt pour vos clients, pour vos salariés, ou pas d'actualité pour le moment ? Un mot de réponse me suffit.
+  relance_2: |-
+    Dernier message de ma part, {prenom}. Si le sujet revient chez {entreprise}, je reste joignable ici. Belle journée à vous.
+
+# Campagnes suivantes, à rédiger le moment venu :
+# ezsolar_s2:
+#   marque: EZ Solar
+#   verifier_charte: true
+#   message_1: |-
+#   relance_1: |-
+#   relance_2: |-
+#
+# projet_ia:   (offre et prix à définir avant toute campagne)
+#   marque: Projet IA
+#   verifier_charte: false
