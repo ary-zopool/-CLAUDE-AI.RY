@@ -1,0 +1,44 @@
+# Configuration du robot de prospection LinkedIn — Ary
+# Modifiez les valeurs après les deux-points. Ne touchez pas aux noms à gauche.
+
+# Campagne active (doit exister dans modeles.yaml)
+campagne_active: ezdrive_d3
+
+# Rythme (volontairement bas pour protéger votre profil)
+invitations_par_jour: 15        # ne pas dépasser 20
+messages_par_jour: 25           # messages + relances confondus
+visites_profil_par_jour: 60     # chaque vérification d'acceptation = une visite de profil
+pause_min_secondes: 25          # pause aléatoire entre deux actions
+pause_max_secondes: 90
+retard_depart_max_minutes: 40   # départ décalé au hasard pour ne pas agir toujours à la même minute
+
+# Horaires autorisés (heure de votre ordinateur)
+heure_debut: 8
+heure_fin: 18
+jours_autorises: [lundi, mardi, mercredi, jeudi, vendredi]
+
+# Séquence : nombre de jours après le message 1
+relance_1_jours: 4
+relance_2_jours: 10
+
+# Ne jamais contacter (un nom d'entreprise ou une URL de profil par ligne)
+exclusions_entreprises:
+  - EZdrive
+  - EZ Solar
+  - Suraya
+exclusions_profils: []
+  # - https://www.linkedin.com/in/exemple/
+
+# Alertes par e-mail (laisser actif: false tant que ce n'est pas configuré)
+alerte_email:
+  actif: false
+  smtp_serveur: smtp.gmail.com
+  smtp_port: 587
+  expediteur: ""
+  mot_de_passe_application: ""   # mot de passe d'application Gmail, jamais votre mot de passe normal
+  destinataire: ""
+
+# Fichiers
+fichier_prospects: prospects.xlsx
+dossier_navigateur: profil_navigateur
+fichier_journal: journal.log
