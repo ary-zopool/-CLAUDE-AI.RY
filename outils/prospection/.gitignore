@@ -1,0 +1,5 @@
+# Ne jamais versionner : session LinkedIn, données prospects (RGPD), journaux
+profil_navigateur/
+prospects.xlsx
+journal.log
+__pycache__/
