@@ -58,10 +58,68 @@ Google Drive activé.
 8. Si offre complémentaire (ex. borne EZdrive en plus du PV) : slide coût pragmatique de cette
    offre, puis slide détail/rassurance — même logique pragmatique-puis-rassurance en miniature,
    intégrée dans la même présentation plutôt qu'un document séparé.
-9. **Équipe / prochaines étapes** — logos des deux marques si les deux offres sont présentes.
-10. **Annexe CGV et mentions légales**, TOUJOURS en toute dernière position, jamais mêlée aux
+9. **Barème CRE : les aides baissent** (fond nuit) — la prime de la tranche de puissance du
+   client, trimestre par trimestre, et l'évolution du prix du kWh. Voir « Slides 9 et 10 ».
+10. **Compte à rebours du barème** (fond papier, accent or) — la date de fin du barème en cours,
+    la règle du tarif figé, et ce que nous faisons d'ici là. Voir « Slides 9 et 10 ».
+11. **Équipe / prochaines étapes** — logos des deux marques si les deux offres sont présentes.
+12. **Annexe CGV et mentions légales**, TOUJOURS en toute dernière position, jamais mêlée aux
     slides de contenu commercial. Contenu : nature de l'offre (contrat distinct par entité
     juridique), garantie, règlement, validité, et le point clé B2B :
+
+## Slides 9 et 10 : le barème CRE (urgence factuelle, jamais de pression)
+
+À inclure quand l'installation PV relève du barème « S24 PV ZNI » de la CRE (bâtiment, 500 kWc
+au plus, zones non interconnectées : Martinique, Guadeloupe, Guyane, La Réunion, Corse, Mayotte,
+etc.). Hors de ce cadre (métropole, installation hors bâtiment, plus de 500 kWc), ne pas les
+faire et le dire dans le compte rendu. Ces deux slides portent le logo EZsolar et se placent
+APRÈS les slides de l'offre complémentaire et AVANT « Équipe / prochaines étapes ».
+
+**Données (à écrire dans le tableau de l'étape 3, avec le fichier et la date de mise à jour)**
+- Télécharger le fichier officiel de la CRE (open data) :
+  `https://www.cre.fr/fileadmin/Documents/Open_data/Transition_energetique_et_appels_d_offres/Tarifs_PV_ZNI.zip`
+  (fichier « Tarifs S24 ZNI T.. »). Lire avec `openpyxl` (`data_only=True`).
+- Onglet « Autoconsommation » : première partie = prime à l'investissement (€/Wc), seconde =
+  tarif d'achat du surplus (c€/kWh). Onglet « Vente en totalité » si le projet vend tout.
+  Le nom du territoire figure sur la première ligne de son bloc ; les tranches P + Q
+  (0-3, 3-9, 9-36, 36-100, 100-500 kWc) suivent. Les lignes « entre le… » et « et le… » donnent
+  les dates de chaque trimestre. Contrôler à l'écran le territoire et la tranche lus.
+- Retenir la tranche de la puissance du client (P + Q) et le territoire du site.
+- La dernière colonne est le trimestre en vigueur. Si la date du jour est postérieure à sa date
+  de fin, le fichier est périmé : télécharger la version à jour, ou le dire.
+- Prime du client = prime €/Wc de la tranche × puissance en Wc. Elle doit retrouver l'aide du
+  tableau de l'étape 3 ; sinon signaler l'écart sans trancher.
+- Prix du kWh : tarif Bleu EDF option base 6 kVA publié par la CRE (série août 2016 à aujourd'hui) ;
+  si absent du fichier lu, ne pas afficher la variation.
+
+**Slide 9, « La prime baisse chaque trimestre »** : barres de la prime €/Wc de la tranche du
+client, du premier trimestre du fichier (janvier 2024) au trimestre en vigueur ; le pic et le
+niveau actuel étiquetés ; la variation en % entre le pic et aujourd'hui, en très gros. Si l'axe ne
+part pas de zéro, l'écrire sous le graphique. Un second bloc donne l'évolution du prix du kWh
+(en %, valeurs de départ et d'arrivée). Source écrite sur la slide : « CRE, barème S24 PV ZNI,
+[territoire], mise à jour [mois année] ».
+
+**Slide 10, « Le barème actuel s'arrête le [date] »** : la date de fin du trimestre en vigueur,
+en très grand ; trois points : la CRE révise le barème chaque trimestre ; le tarif et la prime
+sont ceux du trimestre où la demande complète de raccordement est déposée ; contrat d'achat
+de 20 ans (à confirmer sur le contrat d'achat EDF avant de le promettre). Puis ce que nous
+faisons d'ici là : l'étude, le dossier de raccordement, le suivi de la prime.
+
+**Garde-fous**
+- Aucun chiffre en euros du type « ce que vous perdez en attendant » ni « ce que les premiers
+  ont touché en plus », et aucun gain ou économie d'un autre client (slides retirées par Ary le
+  14/10/2026). Seuls chiffres autorisés : le barème public, et ceux du client dans le tableau.
+- Ne pas annoncer le niveau du prochain barème : il n'est pas connu. Dire seulement qu'il est
+  révisé chaque trimestre. Pour dire que les aides baissent, citer le chiffre exact du fichier
+  (variation depuis le pic) plutôt qu'un superlatif.
+- Compter les jours restants à la date de rédaction. Si l'échéance est proche (moins de trois
+  semaines : seuil proposé, à ajuster par Ary), un dossier complet est peu probable : écrire
+  « viser le trimestre suivant » plutôt que promettre un dépôt à temps. Un dossier complet
+  dépend aussi de pièces du client : le dépôt avant la date est « à confirmer ».
+- Aligner la validité de l'offre (annexe CGV) sur la fin du trimestre tarifaire en cours.
+- Pas de logos CRE ni EDF sur ces slides sauf demande d'Ary ; si ajoutés, écrire « Source » et
+  « ces logos n'impliquent aucun partenariat », et rappeler que l'usage des marques est à valider.
+- Ton professionnel et factuel : l'urgence vient des chiffres officiels, pas des adjectifs.
 
 ## Point juridique B2B à ne jamais oublier
 
@@ -98,7 +156,8 @@ coins arrondis (`border-radius:8px`), padding `8px 14px` :
 Nuit `#0f2030`, panel `#16293b`, papier `#f5f2e9`, accent or `#c69a3b`, texte clair `#f5f2e9`,
 texte sombre `#17222b`, gris doux `#5c6771`/`#8b96a0`/`#9aa6b0`. Titres en `Source Serif 4`,
 texte courant en `Inter`. Alterner fond nuit (slides chiffres-choc) et fond papier/blanc
-(slides détail) plutôt que tout sur un seul ton.
+(slides détail) plutôt que tout sur un seul ton. Slide 9 : fond nuit ; slide 10 : fond papier
+avec la date en accent or.
 
 ## Ce qui a déjà existé comme erreur à ne pas refaire
 
@@ -109,3 +168,5 @@ texte courant en `Inter`. Alterner fond nuit (slides chiffres-choc) et fond papi
 - Toujours revérifier le contenu d'une slide avant de la modifier si l'utilisateur a pu l'éditer
   à la main entre-temps (voir le `edits` counter dans l'`artifact-view-context` fourni par le
   client — un nombre qui augmente signifie qu'il faut relire avant d'écraser).
+- Ne pas chiffrer en euros « ce que l'attente coûte » ni reprendre le gain d'un autre client
+  sur les slides 9 et 10 (retiré par Ary le 14/10/2026) ; ne pas annoncer le prochain barème.
