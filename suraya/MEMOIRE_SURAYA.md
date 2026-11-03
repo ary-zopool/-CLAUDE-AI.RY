@@ -56,6 +56,7 @@ Vente/Commercial · Communication · Logistique · Coût/Finance · RH · Admin
 ## 6. Journal des décisions
 
 - **[2026-09-27]** Création du projet Suraya, séparé du copilote général COO AI.Ry.
+- **[2026-11-03]** Agent « trello-leads-meta » (skill dans le dépôt, commits 32c3afb et 98fd0b3) : lancé à la demande avec les CSV du Leads Center, il ajoute les leads manquants au tableau LEADS BtC EZD - EZS, archive les doublons non protégés (10 au maximum), pose les étiquettes territoire et produit, qualifie particulier ou entreprise et met à jour le Claude Doc « Leads Meta · tableau récapitulatif ». À faire : importer le zip dans claude.ai ; ajouter une question produit au formulaire Meta.
 
 ---
 
