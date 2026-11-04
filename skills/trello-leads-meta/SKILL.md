@@ -5,7 +5,8 @@ description: "Agent Leads Meta → Trello, lancé à la demande d'Ary. Utilise-l
 
 # Agent Leads Meta → Trello
 
-Version 1 — 3 novembre 2026. Lancé seulement par Ary, dans la conversation, avec les fichiers.
+Version 1.1 — 4 novembre 2026 (ajout : étiquette BORNE BTOB PUBLIC pour le formulaire « Bornes Publiques »).
+Lancé seulement par Ary, dans la conversation, avec les fichiers.
 Il complète la tâche « Leads du matin » (Zoho → Trello) décrite le 23 octobre 2026.
 
 ## Ce dont l'agent a besoin
@@ -36,7 +37,7 @@ Il complète la tâche « Leads du matin » (Zoho → Trello) décrite le 23 oct
 | BORNE PARTICULIER | 6a9ed5f55a1bab415218c750 | particulier, borne |
 | Particulier PV | 6a9ebe492ca51a5287a51362 | particulier, solaire |
 | PV + BORNE | 6a9ebe492ca51a5287a51363 | solaire et borne demandés ensemble |
-| BORNE BTOB PUBLIC | 6a9ebe492ca51a5287a51365 | entreprise ou collectivité, borne (parking, flotte, public) |
+| BORNE BTOB PUBLIC | 6a9ebe492ca51a5287a51365 | entreprise ou collectivité, borne (parking, flotte, public) ; **et tout lead du formulaire Meta « Bornes Publiques »** (voir « Étiqueter ») |
 | PV BTOB | 6ab6b5d05d5c4f9e50ee96db | entreprise ou collectivité, solaire |
 | Borne Copro | 6a9ebe492ca51a5287a51364 | copropriété, syndic, résidence |
 
@@ -122,10 +123,16 @@ confirmation (« Je lance ? »). S'il a écrit « sans confirmation » en lança
   Qualification : Particulier (adresse grand public)
   ```
   Ajouter « Note : numéro corrigé (0 en trop) » si le script a corrigé le téléphone.
-- **Étiqueter** : territoire toujours ; produit seulement si la demande le dit (les formulaires Meta
-  actuels ne posent pas la question : sans indice, pas d'étiquette produit, « produit inconnu » dans
-  le tableau). Ajouter les étiquettes manquantes aux cartes nouvelles et existantes, protégées
-  comprises. Ne jamais retirer une étiquette.
+- **Étiqueter** : territoire toujours ; produit seulement si la demande le dit.
+  **Formulaire « Bornes Publiques »** : si le nom du formulaire (champ `formulaire` du script, comparé
+  sans tenir compte des majuscules ni des accents) contient « bornes publiques », poser aussi
+  l'étiquette **BORNE BTOB PUBLIC** sur la carte du lead, qu'elle soit créée ou déjà présente. L'étiquette
+  suit le formulaire, même si le lead paraît être un particulier : la qualification « Particulier ou
+  entreprise » reste décidée à l'étape 5, sans être modifiée par l'étiquette.
+  Pour les autres formulaires, qui ne posent pas la question du produit : sans indice, pas d'étiquette
+  produit, « produit inconnu » dans le tableau.
+  Ajouter les étiquettes manquantes aux cartes nouvelles et existantes, protégées comprises. Ne jamais
+  retirer une étiquette.
 - **Archiver** les doublons retenus à l'étape 4.
 
 Interdits : supprimer quoi que ce soit, modifier la description ou les commentaires d'une carte
@@ -141,11 +148,14 @@ Claude Doc « Leads Meta · tableau récapitulatif » : https://claude.ai/artifa
   traité pour l'instant » au premier passage.
 - Colonnes : Reçu le · Nom · Territoire · Produit · Particulier ou entreprise · Indice ·
   Carte Trello (lien) · Action (créée, déjà présente, doublon archivé, à arbitrer).
+  Colonne Produit : « borne publique (BtoB) » pour les leads du formulaire « Bornes Publiques » ;
+  sinon le produit indiqué par les étiquettes de la carte, ou « produit inconnu ».
 - Ajouter en tête de « Passages de l'agent » une ligne : date et heure, fichiers lus, leads uniques,
   créés, déjà présents, doublons archivés, cas à arbitrer.
 
 ### 8. Compte rendu à Ary
 
-Trois lignes d'abord : cartes créées, doublons archivés, cas à arbitrer. Puis les cas à arbitrer
+Trois lignes d'abord : cartes créées, doublons archivés, cas à arbitrer. Puis le nombre de cartes qui ont
+reçu BORNE BTOB PUBLIC (formulaire « Bornes Publiques »), les cas à arbitrer
 (nom, colonnes, raison), les numéros corrigés, les leads hors territoire, et le lien du tableau
 récapitulatif. Rien n'est envoyé à un client.
