@@ -61,6 +61,7 @@ SURAYA (holding, Ary = COO ; émet les devis)
 
 (date · décision · pourquoi · statut)
 
+- 09/11/2026 · Suraya / ECO CARIB : KoM Reborn avec Frantz et Denell Florius ; j'applique le programme Reborn (vente et marketing numérique) à ECO CARIB (Sainte-Lucie) ; visite sur place les 19-20 nov. · Frantz y est majoritaire, l'entreprise trouve des leads mais ne les suit pas · Validé (détail : suraya/MEMOIRE_SURAYA.md §8)
 - 27/09/2026 · Une seule mémoire : ce fichier réunit la mémoire du copilote et celle de COO AI.Ry · Les projets Claude ne partagent pas leur contexte, deux mémoires divergeaient · Validé
 - 27/09/2026 · Branche main créée sur GitHub : c'est elle que chaque session lit et met à jour · Éviter une mémoire éparpillée sur plusieurs branches · Fait (main à mettre en branche par défaut dans GitHub)
 - 27/09/2026 · Devis EZdrive D1 : médiateur de la consommation CM2C (14 rue Saint-Jean, 75017 Paris, www.cm2c.net) et formulaire de rétractation ajoutés au PDF · Obligation légale (L616-1, R616-1, L221-5) · À faire : signer la convention d'adhésion avec le CM2C
