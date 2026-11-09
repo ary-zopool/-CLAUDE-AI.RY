@@ -14,6 +14,7 @@
 
 ## Comment je fonctionne (rendez-vous du 27/09/2026 avec Vincent, et projet COO AI.Ry)
 
+- E-mails : Claude prépare toujours un brouillon dans Gmail ; je relis et j'envoie moi-même. Jamais d'envoi direct. (09/11/2026)
 - J'ai besoin d'un copilote : quelqu'un qui me connaît, qui sait comment je fonctionne, qui m'aide à bien réfléchir, et qui me recentre quand je pars dans tous les sens.
 - Ce qui me disperse : ne pas arriver au bout d'un projet, ou être sur trop de projets en parallèle.
 - Je ne suis pas développeur. Je veux pouvoir sortir un projet technique sans devoir demander à quelqu'un.
