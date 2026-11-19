@@ -51,6 +51,32 @@ python3 scripts/generer_devis.py devis.json -o devis.pdf
 
 Le script choisit le forfait d'après `lineaire_m`, calcule la TVA selon les trois régimes, décide si le paiement Alma en 4 fois est proposé, et rend un PDF de quatre pages : l'offre, la garantie de prix et la signature ; le détail chiffré ; les conditions, avec le médiateur de la consommation ; le formulaire type de rétractation.
 
+## Prix absent du catalogue : chercher d'abord dans Zoho
+
+Règle d'Ary (19 novembre 2026) : **quand un prix manque au catalogue, va le chercher dans Zoho Books avant de demander quoi que ce soit.**
+
+1. Chercher l'article dans Zoho Books (organisation `20087134268`, outil `list_items`, filtre « actifs ») par mot-clé : `coffret`, `tranch`, `IRL`, `3G16`, `pied`, `massif`, `EZD_MQ_MO_B2C`…
+2. Prendre l'article **actif** du bon territoire, d'après le préfixe du SKU : `EZD_MQ_` Martinique, `EZD_GDP_` Guadeloupe, `EZD_GUY_` Guyane, `EZD_RUN_` La Réunion. Pour un particulier, préférer les articles « particulier » ou `B2C`.
+3. Citer dans la réponse le nom de l'article, son SKU et son prix de vente HT, puis le passer en `lignes_libres`.
+4. Seulement si Zoho n'a rien d'adapté, ou propose plusieurs prix contradictoires sans moyen de trancher : demander le montant au commercial.
+
+Références relevées dans Zoho le 19 novembre 2026 (Martinique, prix de vente HT) :
+
+| Besoin | Article Zoho | SKU | Prix HT |
+|---|---|---|---|
+| Boîtier pour disjoncteur, intérieur | Coffret de protection Intérieur 4 à 6 modules pour particulier | EZD_MQ_protection_coffret_interieur_1R6M_AC | 39,40 € |
+| Boîtier pour disjoncteur, extérieur | Coffret Extérieur 13 modules étanche | EZD_MQ_Coffret_13_modules_étanche' | 85,00 € |
+| Tranchée en terre | Tranchée terrain naturel pour installation AC | EZD_MQ_VRD_tranchee_vegetale_AC | 90,00 €/ml |
+| Tranchée en béton | Tranchée terrain béton / bitume | EZD_MQ_VRD_tranchee_beton | 210,00 €/ml |
+| Tube IRL au mètre (hors forfait) | Tube IRL Ø32mm | EZD_MQ_VRD_tubeIRL_32mm | 6,10 €/ml |
+| Câble 16 mm² | Alimentation AC monophasée 3G16 | EZD_MQ_cable_3G16 | 19,90 €/ml |
+| Main d'œuvre, pose à domicile (hors forfait) | EZWorks - Main d'oeuvre - Installation de Borne à Domicile | EZD_MQ_MO_B2C_EZWORKS | 800,00 € |
+| Pied de borne, fourniture | Pied de borne AC | EZD_MQ_borne_pied_AC | 550,00 € |
+| Pied de borne, main d'œuvre | EZWorks - Main d'oeuvre - Pied de borne AC | EZD_MQ_MO_B2C_PIED_DE_BORNE_EZWORKS | 250,00 € |
+| Massif béton du pied | Massif pied de borne AC | EZD_MQ_VRD_massif_beton_AC | 490,00 € |
+
+Ces prix évoluent : revérifier dans Zoho à chaque chiffrage, ce tableau n'est qu'un repère.
+
 ## Après avoir lancé le script
 
 Reprends **le rapport de contrôles tel quel** dans ta réponse, avant le lien vers le PDF. C'est ce qui permet au commercial de vérifier sans rouvrir le document. Signale ensuite les points à faire confirmer avant envoi.
@@ -59,8 +85,8 @@ Si un contrôle échoue, le script ne produit rien. N'essaie pas de contourner :
 
 ## Ce que tu ne fais jamais
 
-- **Inventer ou estimer un prix absent du catalogue.** Poteau, massif béton, coffret de protection AC, création de PDL EDF, reprise de tableau : demande le montant au commercial et passe-le en `lignes_libres`. Le coffret a été retiré du catalogue, son prix de 368,40 € relevé sur d'anciens devis étant erroné.
-- **Extrapoler la grille au-delà de 30 ml.** C'est un devis sur mesure.
+- **Inventer ou estimer un prix.** Un prix absent du catalogue se cherche d'abord dans Zoho (section ci-dessus), puis, à défaut, se demande au commercial. Il passe en `lignes_libres` avec sa source. Le coffret a été retiré du catalogue, son prix de 368,40 € relevé sur d'anciens devis étant erroné.
+- **Extrapoler la grille au-delà de 30 ml.** C'est un devis sur mesure, chiffré ligne par ligne avec les articles Zoho.
 - **Accepter un prix total imposé et reconstituer les lignes à rebours.** C'est le mécanisme qui produit les devis faux : chaque ligne paraît plausible, seul le sens du calcul est inversé. Refuse et explique pourquoi.
 - **Arrondir un total** pour faire plus propre.
 - **Traiter une case cochée comme une signature électronique.** La signature passe par Zoho Sign.
